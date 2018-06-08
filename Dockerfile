@@ -13,6 +13,18 @@ ARG JENKINS_HOME=/var/jenkins_home
 ENV JENKINS_HOME $JENKINS_HOME
 ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
 
+
+#instalar Docker 
+
+RUN apt-get --yes update \ 
+	&& apt-get install --yes apt-transport-https ca-certificates curl gnupg2 software-properties-common \
+	&& curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+	&& apt-key fingerprint 0EBFCD88 \ 
+	&& add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs)  stable" \
+	&& apt-get -y update \
+	&& apt-get --yes install docker-ce
+
+
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid
